@@ -1,7 +1,7 @@
 // Bump this version number every time you re-upload changed files.
 // Changing it forces every visitor's browser to drop the old cache
 // and fetch the new files instead of showing the old (broken-looking) version.
-const CACHE_NAME = "elite3-cache-v2";
+const CACHE_NAME = "elite3-cache-v3";
 
 // Only truly static assets (icons) are cache-first.
 // HTML/CSS/JS are network-first so updates show immediately on hosting.

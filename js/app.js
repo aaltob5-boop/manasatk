@@ -69,6 +69,22 @@ function route() {
     return;
   }
 
+  // Auto-logout: if the student's session is active but their code has
+  // expired (or been deactivated) since they logged in, kick them out now
+  // instead of letting the old session stay valid forever.
+  if (parts[0] === "student" && session && session.role === "student") {
+    const code = DB.find("codes", session.codeId);
+    const expired = !code || code.status === "expired" ||
+      (code.endDate && daysBetween(todayISO(), code.endDate) < 0);
+    if (expired) {
+      if (code && code.status !== "expired") DB.update("codes", code.id, { status: "expired" });
+      Session.clear();
+      location.hash = "#/login";
+      toast("انتهت مدة اشتراكك. تواصل معنا عبر واتساب للتجديد", "red");
+      return;
+    }
+  }
+
   document.getElementById("publicShell").classList.remove("active");
   document.getElementById("appShell").classList.remove("active");
   document.getElementById("authShell").classList.remove("active");
